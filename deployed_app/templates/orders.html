@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Orders List</title>
+</head>
+<body>
+  <h1>Orders List</h1>
+
+  <form action="/orders" method="POST">
+    <table border="1" cellpadding="5" cellspacing="0">
+      <tr>
+        <th>Time</th>
+        <th>Customer</th>
+        <th>Dish Name</th>
+        <th>Status</th>
+      </tr>
+
+      {% for od in ods %}
+      <tr>
+        <td>{{ od.Ordertime }}</td>
+        <td>{{ od.Username }}</td>
+        <td>{{ od.Dishname }}</td>
+        <td>
+          {% if od.status == True %}
+            Has Done
+          {% else %}
+            <button type="submit" name="orderid" value="{{ od.id }}">Done</button>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </form>
+
+  <p><a href="/dishes">Back to Dishes</a></p>
+</body>
+</html>

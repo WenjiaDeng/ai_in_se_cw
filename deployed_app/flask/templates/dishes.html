@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dishes List</title>
+</head>
+<body style="font-family: Arial, sans-serif; background:#f7f7f7; margin:0; padding:0;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 20px;">
+    <div style="background:#ffffff; padding: 18px; border: 1px solid #e6e6e6; border-radius: 8px;">
+      <h1 style="margin: 0 0 10px 0; color:#333;">Dishes List</h1>
+      <a href="/orders" style="display:inline-block; margin-bottom: 16px; color:#0b66c3; text-decoration:none;">View Orders</a>
+
+      {% if foods and foods|length > 0 %}
+        {% for food in foods %}
+          <div style="border: 1px solid #e6e6e6; background:#fafafa; border-radius: 8px; padding: 14px; margin: 12px 0;">
+            <div style="display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap;">
+              <div style="min-width: 180px;">
+                {% if food.pic %}
+                  <img src="{{ url_for('static', filename=food.pic) }}" alt="{{ food.name }}" style="width:180px; height:auto; border-radius:6px; border:1px solid #ddd;" />
+                {% else %}
+                  <div style="width:180px; height:120px; display:flex; align-items:center; justify-content:center; background:#f0f0f0; border:1px solid #ddd; border-radius:6px; color:#666; font-size:14px;">
+                    No image
+                  </div>
+                {% endif %}
+              </div>
+
+              <div style="flex:1; min-width: 240px;">
+                <h2 style="margin:0 0 6px 0; color:#222; font-size:20px;">{{ food.name }}</h2>
+
+                <p style="margin:0 0 8px 0; color:#444; line-height:1.4;">
+                  <strong>Description:</strong>
+                  <span>{{ food.description }}</span>
+                </p>
+
+                <p style="margin:0 0 8px 0; color:#444;">
+                  <strong>Price:</strong>
+                  <span>{{ food.price }}</span>
+                </p>
+
+                <p style="margin:0 0 12px 0; color:#444;">
+                  <strong>Pic value:</strong>
+                  <span>{{ food.pic }}</span>
+                </p>
+
+                <form action="/submitfood" method="post" style="margin:0;">
+                  <button type="submit" name="food" value="{{ food.name }}"
+                          style="background:#1f7a1f; color:#fff; border:none; padding:10px 14px; border-radius:6px; cursor:pointer;">
+                    Order
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="color:#666; margin: 10px 0;">No dishes available.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

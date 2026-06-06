@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: canteen-mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Alice1234
+      MYSQL_DATABASE: canteendb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pAlice1234"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: canteen-flask-app
+    restart: unless-stopped
+    ports:
+      - "5005:5005"
+    environment:
+      DATABASE_URL: mysql+pymysql://root:Alice1234@mysql-db:3306/canteendb?charset=utf8
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
